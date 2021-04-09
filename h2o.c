@@ -18,8 +18,12 @@
 
 #define TRUE 1				//Comodidade
 
+//PODEM ser alterados para teste
 #define BUFFER_OXIG 5		//Tamanho máximo do BUFFER de Oxigênio
 #define BUFFER_HIDR 10		//Tamanho Máximo do BUFFER de Hidrogênio
+
+#define TEMPO_OXI 2			//Tempo de produção de cada elemento de Oxigênio em segundos
+#define TEMPO_HIDRO 1		//Tempo de produção de cada elemento de Hidrogênio em segundos
 
 //Variáveis globais
 sem_t s_oxigenio, s_hidrogenio;		//Semáforos
@@ -143,16 +147,16 @@ void * funMolecula(){
 main() simples, apenas com a declação tas THREADS e inicialização dos SEMAPHORE E A BARRIER
 */
 int main(){
-	pthread_t oxi_t, hid_t, h2o_t;									//Declaração
+	pthread_t oxi_t, hid_t, h2o_t;										//Declaração
 
-	sem_init(&s_oxigenio, 0, 0);									//Inicialização SEMAPHORE
-	sem_init(&s_hidrogenio, 0, 0);									//Inicialização SEMAPHORE
+	sem_init(&s_oxigenio, 0, 0);										//Inicialização SEMAPHORE
+	sem_init(&s_hidrogenio, 0, 0);										//Inicialização SEMAPHORE
 
-	pthread_barrier_init(&b_molecula, NULL, 3);						//Inicialização BARRIER
+	pthread_barrier_init(&b_molecula, NULL, 3);							//Inicialização BARRIER
 
-	pthread_create(&oxi_t, NULL, funOxigenio, (void *)2);			//Criação das THREADS
-	pthread_create(&hid_t, NULL, funHidrogenio, (void *)1);			//Criação das THREADS
-	pthread_create(&h2o_t, NULL, funMolecula, NULL);				//Criação das THREADS
+	pthread_create(&oxi_t, NULL, funOxigenio, (void *)TEMPO_OXI);		//Criação das THREADS
+	pthread_create(&hid_t, NULL, funHidrogenio, (void *)TEMPO_HIDRO);	//Criação das THREADS
+	pthread_create(&h2o_t, NULL, funMolecula, NULL);					//Criação das THREADS
 
 	pthread_join(oxi_t, NULL);										
 	pthread_join(hid_t, NULL);
